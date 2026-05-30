@@ -1,4 +1,4 @@
-import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   return (
@@ -9,12 +9,12 @@ export default function Home() {
             <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">URL Shortener</h1>
             <p className="mt-2 text-zinc-600">Sign in or create an account to continue.</p>
           </div>
-          <SignedIn>
+          <Show when="signed-in">
             <UserButton />
-          </SignedIn>
+          </Show>
         </div>
 
-        <SignedOut>
+        <Show when="signed-out">
           <div className="flex flex-col gap-3 sm:flex-row">
             <SignInButton mode="modal">
               <button className="inline-flex h-11 items-center justify-center rounded-md bg-zinc-900 px-5 text-sm font-medium text-white hover:bg-zinc-800">
@@ -28,11 +28,11 @@ export default function Home() {
               </button>
             </SignUpButton>
           </div>
-        </SignedOut>
+        </Show>
 
-        <SignedIn>
+        <Show when="signed-in">
           <p className="text-sm text-zinc-600">You are signed in. Click your avatar to manage your profile.</p>
-        </SignedIn>
+        </Show>
       </div>
     </main>
   );
