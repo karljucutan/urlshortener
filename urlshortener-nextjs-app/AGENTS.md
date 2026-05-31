@@ -77,6 +77,8 @@ Use existing alias paths where appropriate:
 ### 6) UI and Styling
 
 - Use Shadcn and Tailwind utilities consistent with existing style.
+- Prioritize Shadcn components first; create custom components only when no suitable Shadcn option exists.
+- Reference `.agents/skills/shadcn/SKILL.md` for shadcn workflows and `.agents/skills/shadcn/mcp.md` when using shadcn MCP tooling.
 - Keep accessibility in mind for interactive elements.
 - Do not introduce a new design system unless requested.
 
