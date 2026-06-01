@@ -3,6 +3,7 @@ import { ExternalLinkIcon, LinkIcon } from "lucide-react";
 import Link from "next/link";
 import { getUserLinks } from "@/services/links";
 import { CreateLinkDialog } from "@/app/(protected)/dashboard/create-link-dialog";
+import { LinkActions } from "@/app/(protected)/dashboard/link-actions";
 import {
   Card,
   CardContent,
@@ -45,29 +46,35 @@ export default async function DashboardPage() {
             <Card key={link.id}>
               <CardHeader className="pb-2">
                 <div className="flex items-start justify-between gap-4">
-                  <CardTitle className="text-base font-medium">
-                    <Link
-                      href={`/${link.shortCode}`}
-                      className="hover:underline text-zinc-900"
-                    >
-                      /{link.shortCode}
-                    </Link>
-                  </CardTitle>
-                  <Badge variant="secondary" className="shrink-0 text-xs">
-                    {link.createdAt.toLocaleDateString()}
-                  </Badge>
+                  <div className="min-w-0 flex-1 space-y-1">
+                    <CardTitle className="text-base font-medium">
+                      <Link
+                        href={`/${link.shortCode}`}
+                        className="text-zinc-900 hover:underline"
+                      >
+                        /{link.shortCode}
+                      </Link>
+                    </CardTitle>
+                    <CardDescription className="flex items-center gap-1 truncate">
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 truncate hover:underline"
+                      >
+                        {link.url}
+                        <ExternalLinkIcon className="h-3 w-3 shrink-0" />
+                      </a>
+                    </CardDescription>
+                  </div>
+
+                  <div className="flex shrink-0 flex-col items-end gap-2">
+                    <Badge variant="secondary" className="text-xs">
+                      {link.createdAt.toLocaleDateString()}
+                    </Badge>
+                    <LinkActions link={link} />
+                  </div>
                 </div>
-                <CardDescription className="flex items-center gap-1 truncate">
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="truncate hover:underline flex items-center gap-1"
-                  >
-                    {link.url}
-                    <ExternalLinkIcon className="h-3 w-3 shrink-0" />
-                  </a>
-                </CardDescription>
               </CardHeader>
             </Card>
           ))}

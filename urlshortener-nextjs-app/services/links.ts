@@ -1,7 +1,9 @@
 import { customAlphabet } from "nanoid";
 import {
+  deleteShortenedLink,
   createShortenedLink,
   getLinksByUserId,
+  updateShortenedLink,
   type ShortenedLink,
 } from "@/repositories/links";
 
@@ -11,6 +13,18 @@ export type CreateUserLinkInput = {
   userId: string;
   url: string;
   customSlug?: string;
+};
+
+export type UpdateUserLinkInput = {
+  id: number;
+  userId: string;
+  url: string;
+  shortCode: string;
+};
+
+export type DeleteUserLinkInput = {
+  id: number;
+  userId: string;
 };
 
 const SHORT_CODE_LENGTH = 7;
@@ -77,6 +91,10 @@ function normalizeCustomSlug(input: string): string {
   return trimmed;
 }
 
+function normalizeShortCode(input: string): string {
+  return normalizeCustomSlug(input);
+}
+
 export async function createUserLink(
   input: CreateUserLinkInput,
 ): Promise<ShortenedLink> {
@@ -125,4 +143,43 @@ export async function createUserLink(
   }
 
   throw new Error("Unable to generate a unique short code. Please try again.");
+}
+
+export async function updateUserLink(
+  input: UpdateUserLinkInput,
+): Promise<ShortenedLink> {
+  if (!input.userId) {
+    throw new Error("You must be signed in to update a link.");
+  }
+
+  const normalizedUrl = normalizeUrl(input.url);
+  const normalizedShortCode = normalizeShortCode(input.shortCode);
+
+  try {
+    return await updateShortenedLink({
+      id: input.id,
+      userId: input.userId,
+      shortCode: normalizedShortCode,
+      url: normalizedUrl,
+    });
+  } catch (error) {
+    if (isUniqueViolation(error)) {
+      throw new Error("That custom slug is already in use.");
+    }
+
+    throw error;
+  }
+}
+
+export async function deleteUserLink(
+  input: DeleteUserLinkInput,
+): Promise<ShortenedLink> {
+  if (!input.userId) {
+    throw new Error("You must be signed in to delete a link.");
+  }
+
+  return deleteShortenedLink({
+    id: input.id,
+    userId: input.userId,
+  });
 }

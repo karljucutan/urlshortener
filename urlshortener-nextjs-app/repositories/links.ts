@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { shortenedLinks } from "@/db/schema";
 
@@ -8,6 +8,18 @@ export type CreateShortenedLinkInput = {
   userId: string;
   shortCode: string;
   url: string;
+};
+
+export type UpdateShortenedLinkInput = {
+  id: number;
+  userId: string;
+  shortCode: string;
+  url: string;
+};
+
+export type DeleteShortenedLinkInput = {
+  id: number;
+  userId: string;
 };
 
 export async function getLinksByUserId(userId: string): Promise<ShortenedLink[]> {
@@ -31,4 +43,49 @@ export async function createShortenedLink(
     .returning();
 
   return createdLink;
+}
+
+export async function updateShortenedLink(
+  input: UpdateShortenedLinkInput,
+): Promise<ShortenedLink> {
+  const [updatedLink] = await db
+    .update(shortenedLinks)
+    .set({
+      shortCode: input.shortCode,
+      url: input.url,
+      updatedAt: new Date(),
+    })
+    .where(
+      and(
+        eq(shortenedLinks.id, input.id),
+        eq(shortenedLinks.userId, input.userId),
+      ),
+    )
+    .returning();
+
+  if (!updatedLink) {
+    throw new Error("Link not found.");
+  }
+
+  return updatedLink;
+}
+
+export async function deleteShortenedLink(
+  input: DeleteShortenedLinkInput,
+): Promise<ShortenedLink> {
+  const [deletedLink] = await db
+    .delete(shortenedLinks)
+    .where(
+      and(
+        eq(shortenedLinks.id, input.id),
+        eq(shortenedLinks.userId, input.userId),
+      ),
+    )
+    .returning();
+
+  if (!deletedLink) {
+    throw new Error("Link not found.");
+  }
+
+  return deletedLink;
 }
