@@ -49,10 +49,10 @@ export default async function DashboardPage() {
                   <div className="min-w-0 flex-1 space-y-1">
                     <CardTitle className="text-base font-medium">
                       <Link
-                        href={`/${link.shortCode}`}
+                        href={`/l/${link.shortCode}`}
                         className="text-zinc-900 hover:underline"
                       >
-                        /{link.shortCode}
+                        /l/{link.shortCode}
                       </Link>
                     </CardTitle>
                     <CardDescription className="flex items-center gap-1 truncate">

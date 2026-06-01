@@ -30,6 +30,18 @@ export async function getLinksByUserId(userId: string): Promise<ShortenedLink[]>
     .orderBy(desc(shortenedLinks.createdAt), desc(shortenedLinks.updatedAt));
 }
 
+export async function getLinkByShortCode(
+  shortCode: string,
+): Promise<ShortenedLink | undefined> {
+  const [link] = await db
+    .select()
+    .from(shortenedLinks)
+    .where(eq(shortenedLinks.shortCode, shortCode))
+    .limit(1);
+
+  return link;
+}
+
 export async function createShortenedLink(
   input: CreateShortenedLinkInput,
 ): Promise<ShortenedLink> {

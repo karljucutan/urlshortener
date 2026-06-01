@@ -2,6 +2,7 @@ import { customAlphabet } from "nanoid";
 import {
   deleteShortenedLink,
   createShortenedLink,
+  getLinkByShortCode,
   getLinksByUserId,
   updateShortenedLink,
   type ShortenedLink,
@@ -37,6 +38,14 @@ const createNanoId = customAlphabet(SHORT_CODE_ALPHABET, SHORT_CODE_LENGTH);
 
 export async function getUserLinks(userId: string): Promise<ShortenedLink[]> {
   return getLinksByUserId(userId);
+}
+
+export async function getLinkDestinationByShortCode(
+  shortCode: string,
+): Promise<string | null> {
+  const link = await getLinkByShortCode(shortCode);
+
+  return link?.url ?? null;
 }
 
 function buildShortCode(): string {
