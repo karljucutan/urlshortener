@@ -50,11 +50,18 @@ Use existing alias paths where appropriate:
 - Avoid broad refactors unless explicitly requested.
 - Do not reformat unrelated files.
 
-### 2) Preserve Architecture and Framework Patterns
+### 2) Architecture and Framework Patterns (Layered/Clean Architecture)
 
 - Keep Next.js App Router structure.
+- Follow a layered architecture (clean architecture style) for feature implementation.
 - Prefer Server Components by default.
 - Add client components only when browser-only APIs or interactive state require it.
+- Never query the database from React components.
+- Enforce this flow for feature work: UI -> Server Action or route handler -> service -> repository -> database.
+- Prefer Next.js Server Actions by default for UI-to-server calls.
+- Use route handlers when an explicit API endpoint is required.
+- Keep database access in repository modules that use db/index.ts.
+- Services should hold business logic and call repositories, not the other way around.
 
 ### 3) TypeScript Quality
 
