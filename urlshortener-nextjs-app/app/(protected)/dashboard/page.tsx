@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { ExternalLinkIcon, LinkIcon } from "lucide-react";
 import Link from "next/link";
 import { getUserLinks } from "@/services/links";
-import { CreateLinkDialog } from "@/components/create-link-dialog";
+import { CreateLinkDialog } from "@/app/(protected)/dashboard/create-link-dialog";
 import {
   Card,
   CardContent,
