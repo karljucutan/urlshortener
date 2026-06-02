@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getLinkDestinationByShortCode } from "@/services/links";
 
+export const dynamic = "force-dynamic";
+
 type RouteContext = {
   params: Promise<{ shortCode: string }>;
 };
