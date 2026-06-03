@@ -29,7 +29,3 @@ This project was built using agentic AI development with GitHub Copilot.
 ## Repository Structure
 
 - `urlshortener-nextjs-app/` - Main web application source code
-
-## Status
-
-Active development.
